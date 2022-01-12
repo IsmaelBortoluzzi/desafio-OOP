@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod
 
 
 class Banco:
-    def __init__(self):
-        self.__contas = {}
-        self.__clientes = []
+    def __init__(self, __contas, __clientes):
+        self.__contas = __contas
+        self.__clientes = __clientes
 
     @property
-    def conta(self) -> dict:
+    def contas(self) -> dict:
         return self.__contas
 
     def add_conta(self, conta):
@@ -22,10 +22,10 @@ class Banco:
         return self.__clientes
 
     def add_cliente(self, cliente):
-        self.__clientes.append(cliente)
+        self.__clientes[cliente.nome] = cliente
 
     def remove_cliente(self, cliente):
-        self.__clientes.remove(cliente)
+        del self.__clientes[cliente.nome]
 
 
 class Pessoa(ABC):
