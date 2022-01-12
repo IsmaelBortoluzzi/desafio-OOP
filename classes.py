@@ -10,8 +10,8 @@ class Banco:
     def conta(self) -> dict:
         return self.__contas
 
-    def add_conta(self, num_conta: str, saldo: float):
-        self.__contas[num_conta] = saldo
+    def add_conta(self, conta):
+        self.__contas[conta.num_conta] = conta
 
     def remove_conta(self, num_conta: str):
         if num_conta in self.__contas:
@@ -26,8 +26,6 @@ class Banco:
 
     def remove_cliente(self, cliente):
         self.__clientes.remove(cliente)
-
-
 
 
 class Pessoa(ABC):
@@ -61,15 +59,15 @@ class Cliente(Pessoa):
     def conta(self) -> dict:
         return self.__contas
 
-    def add_conta(self, num_conta: str, saldo: float):
-        self.__contas[num_conta] = saldo
+    def add_conta(self, conta):
+        self.__contas[conta.num_conta] = conta
 
     def remove_conta(self, num_conta: str):
         if num_conta in self.__contas:
             del self.__contas[num_conta]
 
 
-class Conta:
+class Conta(ABC):
     __num_agencia: str = "0001"
 
     def __init__(self, __num_conta: str, __saldo: float):
@@ -98,12 +96,22 @@ class Conta:
         self.__saldo += quantia
 
 
-
-
 class ContaCorrente(Conta):
-    pass
+    def __init__(self, __num_conta: str, __saldo: float, __limite=500):
+        super().__init__(__num_conta, __saldo)
+        self.__limite = __limite
+
+    def sacar(self, quantia: float):
+        if quantia > self.__saldo + self.__limite:
+            return
+        self.__saldo -= quantia
 
 
 class ContaPoupanca(Conta):
-    pass
+    def __init__(self, __num_conta: str, __saldo: float):
+        super().__init__(__num_conta, __saldo)
 
+    def sacar(self, quantia: float):
+        if quantia > self.__saldo:
+            return
+        self.__saldo -= quantia
