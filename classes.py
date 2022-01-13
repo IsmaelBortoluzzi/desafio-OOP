@@ -70,9 +70,9 @@ class Cliente(Pessoa):
 class Conta(ABC):
     __num_agencia: str = "0001"
 
-    def __init__(self, __num_conta: str, __saldo: float):
+    def __init__(self, __num_conta: str, _saldo: float):
         self.__num_conta = __num_conta
-        self.__saldo = __saldo
+        self._saldo = _saldo
 
     @property
     def num_agencia(self):
@@ -84,7 +84,7 @@ class Conta(ABC):
 
     @property
     def saldo(self):
-        return self.__saldo
+        return self._saldo
 
     @abstractmethod
     def sacar(self, quantia: float):
@@ -93,25 +93,25 @@ class Conta(ABC):
     def depositar(self, quantia: float):
         if quantia <= 0:
             return
-        self.__saldo += quantia
+        self._saldo += quantia
 
 
 class ContaCorrente(Conta):
-    def __init__(self, __num_conta: str, __saldo: float, __limite=500):
-        super().__init__(__num_conta, __saldo)
+    def __init__(self, __num_conta: str, _saldo: float, __limite=500):
+        super().__init__(__num_conta, _saldo)
         self.__limite = __limite
 
     def sacar(self, quantia: float):
-        if quantia > self.__saldo + self.__limite:
+        if quantia > (self._saldo + self.__limite):
             return
-        self.__saldo -= quantia
+        self._saldo -= quantia
 
 
 class ContaPoupanca(Conta):
-    def __init__(self, __num_conta: str, __saldo: float):
-        super().__init__(__num_conta, __saldo)
+    def __init__(self, __num_conta: str, _saldo: float):
+        super().__init__(__num_conta, _saldo)
 
     def sacar(self, quantia: float):
-        if quantia > self.__saldo:
+        if quantia > self._saldo:
             return
-        self.__saldo -= quantia
+        self._saldo -= quantia
